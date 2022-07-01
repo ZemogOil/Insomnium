@@ -1,6 +1,3 @@
-// main.cpp : This file contains the 'main' function. Program execution begins and ends there.
-// This is a raylib template, so I will never have to set up this bullshit ever again
-
 
 #include <iostream>
 #include "raylib.h"
@@ -149,7 +146,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
 
-    // TODO: Unload all loaded data (textures, fonts, audio) here! WOOHOOO! AND I:M PINS AND I:M NEEDLES!
+    // TODO: Unload all loaded data (textures, fonts, audio) here!
 
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
