@@ -56,7 +56,7 @@ int main(void)
 
                 currentScreen = ROOM_2;
             }
-            else if (personPosition.y >= (1080 - personSize.y))
+            else if (personPosition.y == (1080 - personSize.y))
             {
                 personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
 
@@ -77,6 +77,7 @@ int main(void)
 
                 currentScreen = ROOM_1;
             }
+
             else if(personPosition.x < 100  || personPosition.y < 100 || personPosition.x > (1920 - 100 - personSize.x))
             {
                 DrawText("There is nothing here...", ((7 * SCREEN_HEIGHT) / 8), (SCREEN_WIDTH / 2), 64, DARKGREEN);
@@ -91,14 +92,15 @@ int main(void)
                 personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
 
                 currentScreen = ROOM_1;
-                
             }
-
-            else if (personPosition.y >= (1080 - personPosition.y))
+            
+            else if (personPosition.y == (1080 - personSize.y))
             {
+
+
                 currentScreen = ENDING;
             }
-
+            
             else if (personPosition.x < 100 || personPosition.x > (1920 - 100 - personSize.x))
             {
                 DrawText("There is nothing here...", ((7 * SCREEN_HEIGHT) / 8), (SCREEN_WIDTH / 2), 64, DARKGREEN);
