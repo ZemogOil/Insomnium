@@ -32,41 +32,76 @@ int main(void)
     //Main Game Loop
     while (!WindowShouldClose())
     {
+
+        // Screen switching mechanic
+        // I will change the conditions to colliding with like a door later
+
         switch (currentScreen)
         {
         case TITLE:
         {
             if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
             {
+                personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+
                 currentScreen = ROOM_1;
-                
             }
         }
         break;
         case ROOM_1:
         {
-            if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+            if (personPosition.y <= 0)
             {
+                personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+
                 currentScreen = ROOM_2;
-                
+            }
+            else if (personPosition.y >= (1080 - personSize.y))
+            {
+                personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+
+                currentScreen = ROOM_3;
+            }
+
+            else if (personPosition.x < 100 || personPosition.x >(1920 - 100 - personSize.x))
+            {
+                DrawText("There is nothing here...", ((7 * SCREEN_HEIGHT) / 8), (SCREEN_WIDTH / 2), 64, DARKGREEN);
             }
         }
         break;
         case ROOM_2:
         {
-            if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+            if (personPosition.y >= (1080 - personSize.y))
             {
-                currentScreen = ROOM_3;
-                
+                personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+
+                currentScreen = ROOM_1;
             }
+            else if(personPosition.x < 100  || personPosition.y < 100 || personPosition.x > (1920 - 100 - personSize.x))
+            {
+                DrawText("There is nothing here...", ((7 * SCREEN_HEIGHT) / 8), (SCREEN_WIDTH / 2), 64, DARKGREEN);
+            }
+
         }
         break;
         case ROOM_3:
         {
-            if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+            if (personPosition.y <= 0)
+            {
+                personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
+
+                currentScreen = ROOM_1;
+                
+            }
+
+            else if (personPosition.y >= (1080 - personPosition.y))
             {
                 currentScreen = ENDING;
-                
+            }
+
+            else if (personPosition.x < 100 || personPosition.x > (1920 - 100 - personSize.x))
+            {
+                DrawText("There is nothing here...", ((7 * SCREEN_HEIGHT) / 8), (SCREEN_WIDTH / 2), 64, DARKGREEN);
             }
         }
         break;
@@ -91,11 +126,6 @@ int main(void)
         if (IsKeyDown(KEY_UP)) personPosition.y -= 3.0f;
         if (IsKeyDown(KEY_DOWN)) personPosition.y += 3.0f;
 
-        if (IsKeyDown(KEY_D)) personPosition.x += 2.0f;
-        if (IsKeyDown(KEY_A)) personPosition.x -= 2.0f;
-        if (IsKeyDown(KEY_W)) personPosition.y -= 2.0f;
-        if (IsKeyDown(KEY_S)) personPosition.y += 2.0f;
-
 
         //----------------------------------------------------------------------------------
         // Draw
@@ -103,13 +133,16 @@ int main(void)
         BeginDrawing();
         ClearBackground(BLACK);
 
+        // Actually loads the contents of the screen
+        // Later I will have to add a way to store data so that it doesn't always reset upon reentering the room
+
         switch(currentScreen)
         {
         case TITLE:
         {
             // TODO: Draw LOGO screen here!
             DrawText("TITLE SCREEN", 20, 20, 40, GREEN);
-            DrawRectangleV(personPosition, personSize, GRAY);
+            DrawText("Press Enter to Start", 20, 60, 40, GREEN);
 
         } break;
         case ROOM_1:
@@ -141,12 +174,15 @@ int main(void)
             // TODO: Draw ENDING screen here!
 
             DrawText("ENDING SCREEN", 20, 20, 40, RED);
-            DrawRectangleV(personPosition, personSize, GREEN);
 
         } break;
         default: break;
         }
 
+
+        // Player Collision against the borders of the window
+
+        // Y position
         if (personPosition.y <= 0)
         {
             personPosition.y = 0;
@@ -156,6 +192,7 @@ int main(void)
             personPosition.y = (1080 - personSize.y);
         }
 
+        // X Position
         if (personPosition.x <= 0)
         {
             personPosition.x = 0;
