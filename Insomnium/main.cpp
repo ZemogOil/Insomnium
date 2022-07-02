@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <string>
 #include "raylib.h"
 
 typedef enum GameScreen { TITLE, ROOM_1, ROOM_2, ROOM_3, ENDING } GameScreen;
@@ -16,6 +17,15 @@ int main(void)
 
     Vector2 personPosition = { (float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2 };
     Vector2 personSize = { 100.0f, 200.0f };
+
+    Vector2 transitionToRoom1 = { 50.0f, 200.0f };
+    Vector2 transitionToRoom2 = { 50.0f, 200.0f };
+    Vector2 transitionToRoom3 = { 50.0f, 200.0f };
+
+
+    int xPos = personPosition.x;
+    int yPos = personPosition.y;
+
 
     SetTargetFPS(100);
 
@@ -86,13 +96,14 @@ int main(void)
         if (IsKeyDown(KEY_W)) personPosition.y -= 2.0f;
         if (IsKeyDown(KEY_S)) personPosition.y += 2.0f;
 
+
         //----------------------------------------------------------------------------------
         // Draw
         // ----------------------------------------------------------------------------------
         BeginDrawing();
         ClearBackground(BLACK);
 
-        switch (currentScreen)
+        switch(currentScreen)
         {
         case TITLE:
         {
@@ -134,6 +145,24 @@ int main(void)
 
         } break;
         default: break;
+        }
+
+        if (personPosition.y <= 0)
+        {
+            personPosition.y = 0;
+        }
+        else if (personPosition.y >= (1080 - personSize.y))
+        {
+            personPosition.y = (1080 - personSize.y);
+        }
+
+        if (personPosition.x <= 0)
+        {
+            personPosition.x = 0;
+        }
+        else if (personPosition.x >= (1920 - personSize.x))
+        {
+            personPosition.x = (1920 - personSize.x);
         }
 
         EndDrawing();
